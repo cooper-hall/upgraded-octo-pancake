@@ -9,13 +9,30 @@ const botTypeClasses = {
   Captain: "icon star",
 };
 
-function BotCard({ bot }) {
+function BotCard({ bot, setAllBots, setParty }) {
+
+   const dischargeBot = async (bot) => {
+     let req = await fetch(`http://localhost:8002/bots/${bot.id}`, {
+       method: "DELETE",
+     });
+     // in the directions it says Delete just from YourArmy, but 
+     // below is how to delete robot from Collection as well (since we are getting rid of them forever)
+     
+    //  setAllBots((prevState) => {
+    //    return [...prevState.filter((k) => k.id !== bot.id)];
+    //  });
+    
+     setParty ((currentState)=> {
+      return [...currentState.filter((m)=> m.id !== bot.id)]
+     })
+   };
+
   return (
     <div className="ui column">
       <div
         className="ui card"
         key={bot.id}
-        onClick={() => console.log("add code to connect event listener")}
+        // onClick={() => console.log("add code to connect event listener")}
       >
         <div className="image">
           <img alt="oh no!" src={bot.avatar_url} />
@@ -47,8 +64,8 @@ function BotCard({ bot }) {
             <div className="ui center aligned segment basic">
               <button
                 className="ui mini red button"
-                onClick={() =>
-                  console.log("add code to connect event listener")
+                onClick={() => { dischargeBot (bot)}
+                  // console.log("im ready to die")
                 }
               >
                 x
